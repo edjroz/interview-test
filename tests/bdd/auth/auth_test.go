@@ -15,8 +15,9 @@ var _ = Describe("Auth", func() {
 	Describe("Getting the global keychain", func() {
 		Context("Single process retrieval of variable", func() {
 			It("Should return the global keychain variable", func() {
+				chain := *auth.GetKeyChain()
 				Expect(auth.GetKeyChain()).ToNot(BeNil())
-				Expect(len(*auth.GetKeyChain())).ToNot(BeZero())
+				Expect(len(chain.Keys)).ToNot(BeZero())
 			})
 		})
 	})
@@ -47,7 +48,8 @@ var _ = Describe("Auth", func() {
 			It("Should not affect the state of the list", func() {
 				auth.GetKeyChain().DeleteKey(fakeKey)
 				Expect(auth.GetKeyChain().Contains(fakeKey)).To(BeFalse())
-				Expect(len(*auth.GetKeyChain())).ToNot(BeZero())
+				chain := *auth.GetKeyChain()
+				Expect(len(chain.Keys)).ToNot(BeZero())
 			})
 		})
 	})
