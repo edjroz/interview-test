@@ -2,10 +2,12 @@ package block
 
 import (
 	"context"
+	"math/big"
+
 	pkt "github.com/andrewnguyen22/pocket-interview-test/types"
 	"github.com/andrewnguyen22/pocket-interview-test/x/ethereum"
+	"github.com/ethereum/go-ethereum/common"
 	eth "github.com/ethereum/go-ethereum/core/types"
-	"math/big"
 )
 
 // retrieves the block by height
@@ -32,4 +34,19 @@ func ethBlockToPocketBlock(block *eth.Block) *pkt.Block {
 	}
 }
 
-// todo getBlockByHash, create rpc endpoint, and bdd test
+// TODO getBlockByHash ✅
+// TODO bdd test ✅
+// TODO create rpc endpoint
+// retrieves the block by hash
+func GetBlockByHash(hash string) (*pkt.Block, error) {
+	client, err := ethereum.GetClient()
+	defer client.Close()
+	if err != nil {
+		return nil, err
+	}
+	block, err := client.BlockByHash(context.Background(), common.HexToHash(hash))
+	if err != nil {
+		return nil, NewBlockByHashError(err)
+	}
+	return ethBlockToPocketBlock(block), nil
+}
