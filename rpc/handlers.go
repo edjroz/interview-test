@@ -3,11 +3,13 @@ package rpc
 
 import (
 	"encoding/json"
-	"github.com/andrewnguyen22/pocket-interview-test/x/block"
 	"io"
 	"io/ioutil"
 	"math/big"
 	"net/http"
+
+	"github.com/andrewnguyen22/pocket-interview-test/x/block"
+	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -43,6 +45,27 @@ func BlockbyNumber(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 	}
 	// call the underlying function
 	blk, err := block.GetBlockByNumber(i)
+	if err != nil {
+		WriteErrorResponse(w, InternalError, err.Error())
+		return
+	}
+	res, err := json.MarshalIndent(blk, "", "   ")
+	WriteJSONResponse(w, res)
+}
+
+// handles the localhost:<port>/block/byHash call
+func BlockbyHash(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	err := r.ParseForm()
+	if err != nil {
+		WriteErrorResponse(w, InternalError, InvalidHttpParsing)
+		return
+	}
+	hash := r.Form.Get("hash")
+	if hash == "" || !common.IsHexAddress(hash) {
+		WriteErrorResponse(w, InternalError, InvalidInputMessage)
+		return
+	}
+	blk, err := block.GetBlockByHash(hash)
 	if err != nil {
 		WriteErrorResponse(w, InternalError, err.Error())
 		return

@@ -16,6 +16,7 @@ type Route struct {
 func Routes() []Route {
 	routes := []Route{
 		{Name: "BlockByNumber", Method: "POST", Path: "/block/byNumber", HandlerFunc: BlockbyNumber},
+		{Name: "BlockByHash", Method: "POST", Path: "/block/byHash", HandlerFunc: BlockbyHash},
 	}
 	return routes
 }
