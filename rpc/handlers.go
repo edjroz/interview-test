@@ -61,10 +61,12 @@ func BlockbyHash(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 	hash := r.Form.Get("hash")
-	if hash == "" || !common.IsHexAddress(hash) {
+
+	if hash == "" || common.IsHexAddress(hash) {
 		WriteErrorResponse(w, InternalError, InvalidInputMessage)
 		return
 	}
+
 	blk, err := block.GetBlockByHash(hash)
 	if err != nil {
 		WriteErrorResponse(w, InternalError, err.Error())
