@@ -2,7 +2,6 @@ package transaction
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 
 	_const "github.com/andrewnguyen22/pocket-interview-test/const"
@@ -51,9 +50,7 @@ func NewRawTransaction() ([]byte, error) {
 	if err != nil {
 		return nil, NewTxSigError(err)
 	}
-	fmt.Println(signedTx.Hash)
 	ts := types.Transactions{signedTx}
-	fmt.Println(ts)
 	return ts.GetRlp(0), nil
 }
 
