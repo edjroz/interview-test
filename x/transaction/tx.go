@@ -2,13 +2,16 @@ package transaction
 
 import (
 	"context"
+	"fmt"
+	"math/big"
+
 	_const "github.com/andrewnguyen22/pocket-interview-test/const"
 	"github.com/andrewnguyen22/pocket-interview-test/x/auth"
 	"github.com/andrewnguyen22/pocket-interview-test/x/ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"math/big"
+	"github.com/ethereum/go-ethereum/rlp"
 )
 
 // creates new transaction object
@@ -48,9 +51,28 @@ func NewRawTransaction() ([]byte, error) {
 	if err != nil {
 		return nil, NewTxSigError(err)
 	}
-
+	fmt.Println(signedTx.Hash)
 	ts := types.Transactions{signedTx}
+	fmt.Println(ts)
 	return ts.GetRlp(0), nil
 }
 
-// todo above creates a rawTx object -> use it to create SendTransaction, create bdd test, expose rpc endpoint to send
+// TODO above creates a rawTx object -> use it to create SendTransaction ✅
+// TODO create bdd test ✅
+// TODO expose rpc endpoint to send
+func SendTransaction(rawTx []byte) (*common.Hash, error) {
+	client, err := ethereum.GetClient()
+	defer client.Close()
+	if err != nil {
+		return nil, err
+	}
+	tx := &types.Transaction{}
+	rlp.DecodeBytes(rawTx, &tx)
+
+	err = client.SendTransaction(context.Background(), tx)
+	if err != nil {
+		return nil, NewSendTxError(err)
+	}
+	hash := tx.Hash()
+	return &hash, nil
+}

@@ -14,4 +14,20 @@ var _ = Describe("Transaction", func() {
 			})
 		})
 	})
+	Describe("Sending a raw Ethereum transaction", func() {
+		Context("Invalid rawTx", func() {
+			It("should return an error", func() {
+				_, err := transaction.SendTransaction([]byte("malicious tx"))
+				Expect(err).ToNot(BeNil())
+				Expect(err.Error()).To(ContainSubstring(transaction.SendError.Error()))
+			})
+		})
+		Context("Valid rawTx", func() {
+			It("should return a hash", func() {
+				raw, _ := transaction.NewRawTransaction()
+				hash, _ := transaction.SendTransaction(raw)
+				Expect(hash.Hex()).ToNot(BeNil())
+			})
+		})
+	})
 })

@@ -7,6 +7,7 @@ var (
 	GasError       = errors.New("error with raw tx gas")
 	NetIDError     = errors.New("error with network id while creating raw tx")
 	SignatureError = errors.New("error while signing the raw tx")
+	SendError      = errors.New("error while trying to send transaction")
 )
 
 func NewNonceError(err error) error {
@@ -23,4 +24,7 @@ func NewNetIDError(err error) error {
 
 func NewTxSigError(err error) error {
 	return errors.New(SignatureError.Error() + ": " + err.Error())
+}
+func NewSendTxError(err error) error {
+	return errors.New(SendError.Error() + ": " + err.Error())
 }
