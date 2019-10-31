@@ -27,6 +27,7 @@ var _ = Describe("Transaction", func() {
 				raw, _ := transaction.NewRawTransaction()
 				hash, _ := transaction.SendTransaction(raw)
 				Expect(hash.Hex()).ToNot(BeNil())
+				Expect(hash.Hex()).To(ContainSubstring("0x"))
 			})
 		})
 	})

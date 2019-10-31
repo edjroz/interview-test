@@ -44,6 +44,7 @@ var _ = Describe("Block", func() {
 				Expect(res).ToNot(BeNil())
 				Expect(res.Height).To(BeZero())
 				Expect(res.Time).ToNot(BeZero())
+				Expect(res.Hash).To(ContainSubstring("0x"))
 			})
 		})
 	})
