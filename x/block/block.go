@@ -34,9 +34,6 @@ func ethBlockToPocketBlock(block *eth.Block) *pkt.Block {
 	}
 }
 
-// TODO getBlockByHash ✅
-// TODO bdd test ✅
-// TODO create rpc endpoint ✅
 // retrieves the block by hash
 func GetBlockByHash(hash string) (*pkt.Block, error) {
 	client, err := ethereum.GetClient()

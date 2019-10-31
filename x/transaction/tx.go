@@ -54,9 +54,7 @@ func NewRawTransaction() ([]byte, error) {
 	return ts.GetRlp(0), nil
 }
 
-// TODO above creates a rawTx object -> use it to create SendTransaction ✅
-// TODO create bdd test ✅
-// TODO expose rpc endpoint to send ✅
+// send raw Ethereum transaction to the blockchain
 func SendTransaction(rawTx []byte) (*common.Hash, error) {
 	client, err := ethereum.GetClient()
 	defer client.Close()
