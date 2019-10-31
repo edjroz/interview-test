@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/andrewnguyen22/pocket-interview-test/x/block"
+	tx "github.com/andrewnguyen22/pocket-interview-test/x/transaction"
 	"github.com/ethereum/go-ethereum/common"
 
 	"github.com/julienschmidt/httprouter"
@@ -73,5 +74,21 @@ func BlockbyHash(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		return
 	}
 	res, err := json.MarshalIndent(blk, "", "   ")
+	WriteJSONResponse(w, res)
+}
+
+// handles the localhost:<port>/transaction/send
+func SendTrx(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	raw, err := tx.NewRawTransaction()
+	if err != nil {
+		WriteErrorResponse(w, InternalError, err.Error())
+		return
+	}
+	hash, err := tx.SendTransaction(raw)
+	if err != nil {
+		WriteErrorResponse(w, InternalError, err.Error())
+		return
+	}
+	res, err := json.MarshalIndent(hash.Hex(), "", "   ")
 	WriteJSONResponse(w, res)
 }

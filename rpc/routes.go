@@ -17,6 +17,7 @@ func Routes() []Route {
 	routes := []Route{
 		{Name: "BlockByNumber", Method: "POST", Path: "/block/byNumber", HandlerFunc: BlockbyNumber},
 		{Name: "BlockByHash", Method: "POST", Path: "/block/byHash", HandlerFunc: BlockbyHash},
+		{Name: "SendTrx", Method: "POST", Path: "/transaction/send", HandlerFunc: SendTrx},
 	}
 	return routes
 }
