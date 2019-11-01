@@ -8,8 +8,6 @@ import (
 
 // NOTE: does not do any sanity checks on keypair, ignore this for now
 
-// TODO make keychain thread safe, no test needed ✅
-
 type KeyChain struct {
 	Keys []string
 	l    *sync.Mutex

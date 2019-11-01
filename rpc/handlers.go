@@ -55,7 +55,7 @@ func BlockbyNumber(w http.ResponseWriter, r *http.Request, ps httprouter.Params)
 }
 
 // handles the localhost:<port>/block/byHash call
-func BlockbyHash(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+func BlockbyHash(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	err := r.ParseForm()
 	if err != nil {
 		WriteErrorResponse(w, InternalError, InvalidHttpParsing)
@@ -89,6 +89,8 @@ func SendTrx(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		WriteErrorResponse(w, InternalError, err.Error())
 		return
 	}
-	res, err := json.MarshalIndent(hash.Hex(), "", "   ")
+	res, err := json.MarshalIndent(struct {
+		Hash string `json:"hash"`
+	}{hash.Hex()}, "", "   ")
 	WriteJSONResponse(w, res)
 }

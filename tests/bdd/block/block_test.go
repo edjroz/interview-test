@@ -20,6 +20,7 @@ var _ = Describe("Block", func() {
 		Context("Valid height", func() {
 			It("Should return the ethereum genesis block", func() {
 				res, err := block.GetBlockByNumber(big.NewInt(0))
+
 				Expect(err).To(BeNil())
 				Expect(res).ToNot(BeNil())
 				Expect(res.Height).To(BeZero())
@@ -30,9 +31,9 @@ var _ = Describe("Block", func() {
 	Describe("GettingBlockByHash", func() {
 		Context("Invalid hash query", func() {
 			It("should return an error", func() {
-				_, err := block.GetBlockByNumber(big.NewInt(-1))
+				_, err := block.GetBlockByHash("malformed")
 				Expect(err).ToNot(BeNil())
-				Expect(err.Error()).To(ContainSubstring(block.BlockByNumberError.Error()))
+				Expect(err.Error()).To(ContainSubstring(block.BlockByHashError.Error()))
 			})
 		})
 		Context("Valid hash", func() {
